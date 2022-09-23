@@ -1,0 +1,11 @@
+kevin@superapp.com, 12345678
+kevin@superapp.com, 12345678
+user1@wizeline.com, 1aB@ke
+user1@wizeline.com, 1aB@ke
+user1@wizeline.com, 1aB
+kevin@wizeline.com, 1aB@ke
+user1@wizeline.com, pass1
+user2@wizeline.com, pass2
+user3@wizeline.com, pass3
+user1@wizeline.com, pass1
+user2@wizeline.com, pass2

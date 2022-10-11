@@ -81,6 +81,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         //Borrar todos los records que esten dentro de la coleccion bankAccountCollection en mongo db.
         bankAccountRepository.deleteAll();
     }
+    
+    public void deleteCollections() {
+        mongoTemplate.dropCollection("bankAccountCollection");
+    } 
 
     @Override
     public List<BankAccountDTO> getAccountByUser(String user) {

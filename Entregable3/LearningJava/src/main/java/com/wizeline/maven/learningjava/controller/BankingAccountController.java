@@ -159,6 +159,12 @@ public class BankingAccountController {
         bankAccountService.deleteAccounts();
         return new ResponseEntity<>("All accounts deleted", HttpStatus.OK);
     }
+    
+    @DeleteMapping("/deleteCollection")
+    public ResponseEntity<String> eliminaCollections() {
+        bankAccountService.deleteCollections();
+        return new ResponseEntity<>("Se borro la coleccion", HttpStatus.OK);
+    }
 
     @GetMapping("/getExternalUser/{userId}")
     public ResponseEntity<Post> getExternalUser(@PathVariable Long userId) {

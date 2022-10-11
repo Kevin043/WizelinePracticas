@@ -18,6 +18,8 @@ public interface BankAccountService {
     BankAccountDTO getAccountDetails(String user, String lastUsage);
 
     void deleteAccounts();
+    
+    void deleteCollections();
 
     List<BankAccountDTO> getAccountByUser(String user);
 

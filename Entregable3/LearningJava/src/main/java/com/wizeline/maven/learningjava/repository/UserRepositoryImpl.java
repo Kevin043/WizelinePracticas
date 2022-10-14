@@ -7,6 +7,25 @@ public class UserRepositoryImpl {
 
 	private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
 
+	public String delete(String user, String pass) {
+		readFile(user,pass);
+		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
+		LOGGER.info("Inicia proceso de baja de usuaro en BD...");
+
+		deleteFile(user, pass);
+
+		LOGGER.info("Baja Exitosa");
+		return "success";
+	}
+
+	public String actualizar(String userAnt, String passwordAnt, String userNew, String passwordNew){
+		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
+		LOGGER.info("Inicia proceso de actualización de usuaro en BD...");
+		updateFile(userAnt, passwordAnt, userNew, passwordNew);
+		LOGGER.info("Baja Exitosa");
+		return "success";
+	}
+
 	public String createUser(String user, String password) {
 		createFile();
 		LOGGER.info("Inicia procesamiento en capa de acceso de datos");
@@ -56,7 +75,7 @@ public class UserRepositoryImpl {
 			FileWriter fileWritter = new FileWriter(file.getName(),true);
 
 			BufferedWriter bw = new BufferedWriter(fileWritter);
-			
+
 			bw.write(user+", "+password);
 			bw.newLine();
 			bw.close();
@@ -84,5 +103,77 @@ public class UserRepositoryImpl {
 	        e.printStackTrace();
 	      }
 		return result;
+	}
+
+	private void deleteFile(String user, String password) {
+		String result = "fail";
+		try {
+			File file = new File("file.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = "";
+			StringBuffer sb = new StringBuffer();
+			line = br.readLine();
+			while ((line ) != null) {
+				if (!line.trim().equals(user + ", " +password)) {
+					sb.append(line + "\n");
+				}
+				line = br.readLine();
+			}
+			br.close();
+			file.delete();
+			File file2 = new File("file.txt");
+			file2.createNewFile();
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getName(),true));
+			bw.write(sb.toString());
+			bw.close();
+			LOGGER.info("El usuario se elimino correctamente.");
+		} catch (IOException e) {
+			LOGGER.info("A ocurrido un error");
+			e.printStackTrace();
+		}
+	}
+
+	private void updateFile(String userAnt, String passwordAnt, String userNew, String passwordNew) {
+		try {
+			File file = new File("file.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = "";
+			StringBuffer sb = new StringBuffer();
+			line = br.readLine();
+			while ((line ) != null) {
+				if (line.trim().equals(userAnt + ", " +passwordAnt)) {
+					sb.append(userNew + ", " + passwordNew);
+				} else  {
+					sb.append(line + "\n");
+				}
+
+				line = br.readLine();
+			}
+			br.close();
+			file.delete();
+			File file2 = new File("file.txt");
+			file2.createNewFile();
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getName(),true));
+			bw.write(sb.toString());
+			bw.close();
+			LOGGER.info("El usuario se elimino correctamente.");
+			/*File file = new File("file.txt");
+			if (file.createNewFile()) {
+				LOGGER.info("File created: " + file.getName());
+			} else {
+				LOGGER.info("File already exists.");
+			}
+			FileWriter fileWritter = new FileWriter(file.getName(),true);
+
+			BufferedWriter bw = new BufferedWriter(fileWritter);
+
+			bw.write(userNew + ", " + passwordNew);
+			bw.newLine();
+			bw.close();*/
+			LOGGER.info("Successfully wrote to the file.");
+		} catch (IOException e) {
+			LOGGER.info("An error occurred.");
+			e.printStackTrace();
+		}
 	}
 }

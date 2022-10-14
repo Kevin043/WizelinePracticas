@@ -2,8 +2,8 @@ package com.wizeline.maven.learningjava.controller;
 
 import com.wizeline.maven.learningjava.enums.AccountType;
 import com.wizeline.maven.learningjava.model.BankAccountDTO;
-import com.wizeline.maven.learningjava.model.Post;
 
+import com.wizeline.maven.learningjava.model.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,10 +47,10 @@ public class BankingAccountControllerTests {
 
     @Mock
     private ResponseEntity<String> lisResponseEntityDelete;
-    
+
     @Mock
     private ResponseEntity<Map<String, List<BankAccountDTO>>> responseByType;
-    
+
     @Mock
     private ResponseEntity<Post> externalUserResponse;
     
@@ -73,7 +73,7 @@ public class BankingAccountControllerTests {
     }
 
     @Test
-    @DisplayName("Prueba servicio Get /getUserAccount")
+    @DisplayName("Prueba Unitaria Get /getUserAccount")
     public void pruebaUserAccount() {
         LOGGER.info("Inicia prueba de Servicio rest /getUserAccount: " + responseEntity.getStatusCode());
         responseEntity = bankingAccountController.getUserAccount(user, password, fecha);
@@ -82,8 +82,8 @@ public class BankingAccountControllerTests {
     }
 
     @Test
-    @DisplayName("Prueba servicio Get /getUserAccount - ERROR")
-    public void pruebaUserAccountError() {
+    @DisplayName("Prueba Unitaria Get /getUserAccount - Edge Case")
+    public void pruebaUserAccountEdgeCase() {
         fecha = "2022/07/10";
         LOGGER.info("Se iniciando la prueba servicios Rest /createUserError");
         responseEntity = bankingAccountController.getUserAccount(user, password, fecha);
@@ -96,87 +96,88 @@ public class BankingAccountControllerTests {
     }
 
     @Test
-    @DisplayName("Prueba servicio Get /getAccounts")
+    @DisplayName("Prueba Unitaria Get /getAccounts")
     public void pruebaGetAccounts(){
-        LOGGER.info("LearningJava - iniciando prueba getAccounts");
+        LOGGER.info("Se inicia prueba getAccounts");
         listResponseEntity = bankingAccountController.getAccounts();
         LOGGER.info("Se obtiene el codigo: " + listResponseEntity.getStatusCodeValue());
         assertEquals(200, listResponseEntity.getStatusCodeValue());
     }
 
     @Test
-    @DisplayName("Prueba servicio Get /getAccountByUser")
+    @DisplayName("Prueba Unitaria Get /getAccountByUser")
     public void pruebaGetAccountByUser(){
-        LOGGER.info("LearningJava - iniciando prueba getAccountByUser");
+        LOGGER.info("Se Inicia prueba /getAccountByUser");
         listResponseEntity = bankingAccountController.getAccountByUser(user);
         LOGGER.info("Se obtiene el codigo: " + listResponseEntity.getStatusCodeValue());
         assertEquals(200, listResponseEntity.getStatusCodeValue());
     }
 
     @Test
-    @DisplayName("Prueba servicio Get /getAccountByUser - ERROR")
+    @DisplayName("Prueba Unitaria Get /getAccountByUser - Edge Case")
     public void pruebaGetAccountByUserError(){
-        LOGGER.info("LearningJava - iniciando prueba getAccountByUser - Error");
+        LOGGER.info("Se inicia prueba getAccountByUser - Edge Case");
         user = null;
         listResponseEntity = bankingAccountController.getAccountByUser(user);
-        LOGGER.info("Se obtiene el codigo: " + listResponseEntity.getStatusCodeValue());
+        LOGGER.info("Se obtiene el codigo /getAccountByUser: " + listResponseEntity.getStatusCodeValue());
         assertEquals(200, listResponseEntity.getStatusCodeValue());
     }
-    
-    @Test
-    @DisplayName("Prueba servicio Get /getAccountsByType")
-    public void pruebaGetAccountsByType() {
-        LOGGER.info("LearningJava - iniciando prueba getAccountsByType");
-        responseByType = bankingAccountController.getAccountsGroupByType();
-        LOGGER.info("Se obtiene el codigo: " + responseByType.getStatusCodeValue());
-        assertEquals(200, responseByType.getStatusCodeValue());
-        LOGGER.info("Se obtiene el codigo: " + responseByType.getStatusCodeValue());
-    }
 
     @Test
-    @DisplayName("Prueba servicio Delete /deleteAccounts")
+    @DisplayName("Prueba Unitaria Delete /deleteAccounts")
     public void pruebaDeleteAccounts(){
-        LOGGER.info("LearningJava - iniciando prueba deleteAccounts");
+        LOGGER.info("Se inicia prueba /deleteAccounts");
         lisResponseEntityDelete = bankingAccountController.deleteAccounts();
-        LOGGER.info("Se obtiene el codigo: " + lisResponseEntityDelete.getStatusCodeValue());
-        assertEquals(200, lisResponseEntityDelete.getStatusCodeValue());
-    }
-    
-    @Test
-    @DisplayName("Prueba servicio Delete /deleteCollection")
-    public void pruebaDeleteCollection(){
-        LOGGER.info("LearningJava - iniciando prueba deleteCollection");
-        lisResponseEntityDelete = bankingAccountController.eliminaCollections();
-        LOGGER.info("Se obtiene el codigo: " + lisResponseEntityDelete.getStatusCodeValue());
+        LOGGER.info("Se obtiene el codigo respuesta /deleteAccounts: " + lisResponseEntityDelete.getStatusCodeValue());
         assertEquals(200, lisResponseEntityDelete.getStatusCodeValue());
     }
 
     @Test
-    @DisplayName("Prueba servicio update /actualizaCuentas/{banco}")
-    public void pruebaActualizaCuentas() {
-        LOGGER.info("LearningJava - iniciando prueba update /actualizaCuentas/{banco}");
-        responseEntity = bankingAccountController.actualizaCuentas("Banco Azteca");
-        LOGGER.info("Se obtiene el codigo: " + responseEntity.getStatusCodeValue());
-        assertEquals(200, responseEntity.getStatusCodeValue());
+    @DisplayName("Prueba Unitaria Delete /deleteCollection")
+    public void pruebaDeleteCollection(){
+        LOGGER.info("Se inicia prueba /deleteCollection");
+        lisResponseEntityDelete = bankingAccountController.eliminaCollections();
+        LOGGER.info("Se obtiene el codigo de respuesta: " + lisResponseEntityDelete.getStatusCodeValue());
+        assertEquals(200, lisResponseEntityDelete.getStatusCodeValue());
     }
-    
+
     @Test
-    @DisplayName("Se prueba servicio getExternalUser/{userId}")
+    @DisplayName("Se prueba Unitaria /getExternalUser/{userId}")
     public void getExternalUserTest() {
 
         externalUserResponse = bankingAccountController.getExternalUser(datoInicial);
-        LOGGER.info("Resultado: " + externalUserResponse.getBody().getBody());
+        LOGGER.info("Resultado : " + externalUserResponse.getBody().getBody());
         assertEquals("No info in accountBalance since it is an external user",
                 externalUserResponse.getBody().getBody());
 
     }
 
+    @Test
+    @DisplayName("Prueba Unitaria Put /actualizaCuentas/{banco}")
+    public void pruebaActualizaCuentas() {
+        LOGGER.info("Se inicia prueba PUT /actualizaCuentas/{banco}");
+        responseEntity = bankingAccountController.actualizaCuentas("Banco Azteca");
+        LOGGER.info("Se obtiene el codigo de respuesta /actualizaCuentas/{banco} : " + responseEntity.getStatusCodeValue());
+        assertEquals(200, responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    @DisplayName("Prueba Unitaria Get /getAccountsByType")
+    public void pruebaGetAccountsByType() {
+        LOGGER.info("Se inicia la prueba /getAccountsByType");
+        responseByType = bankingAccountController.getAccountsGroupByType();
+        LOGGER.info("Se obtiene el codigo de respuesta /getAccountsByType: " + responseByType.getStatusCodeValue());
+        assertEquals(200, responseByType.getStatusCodeValue());
+    }
+
     /*@Test
-    @DisplayName("Prueba servicio POST /insertaCuenta")
+    @DisplayName("Prueba Unitaria POST /insertaCuenta")
     public void pruebaCreaCuenta() {
-        LOGGER.info("LearningJava - iniciando prueba servicio /insertaCuenta");
+        LOGGER.info("Se inicia prueba servicio /insertaCuenta");
         responseEntity = bankingAccountController.insertCuenta(bankAccountDTO);
         LOGGER.info("Se obtiene el codigo insertaCuenta: " + responseEntity.getStatusCodeValue());
         assertEquals(200, responseEntity.getStatusCodeValue());
     }*/
+
+
 }

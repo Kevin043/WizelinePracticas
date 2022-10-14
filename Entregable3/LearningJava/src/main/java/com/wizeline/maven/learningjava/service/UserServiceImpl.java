@@ -1,7 +1,9 @@
 package com.wizeline.maven.learningjava.service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
+import com.wizeline.maven.learningjava.model.UserDTO;
 import org.springframework.stereotype.Service;
 
 import com.wizeline.maven.learningjava.model.ErrorDTO;
@@ -39,6 +41,45 @@ public class UserServiceImpl implements UserService {
 		if (Utils.validateNullValue(user) && Utils.validateNullValue(password)) {
 			UserRepositoryImpl userDao = new UserRepositoryImpl();
 			result = userDao.login(user, password);
+		}
+		if("success".equals(result)) {
+			response.setCode("OK000");
+			response.setStatus(result);
+		} else {
+			response.setCode("ER001");
+			response.setErrors(new ErrorDTO("ER001",result));
+			response.setStatus("fail");
+		}
+		return response;
+	}
+
+	@Override
+	public ResponseDTO delete(String user, String pas) {
+		LOGGER.info("Inicia procesamiento para Eliminar Usuario");
+		ResponseDTO response = new ResponseDTO();
+		String result = "";
+		if (Utils.validateNullValue(user) && Utils.validateNullValue(pas)) {
+			UserRepositoryImpl userDao = new UserRepositoryImpl();
+			result = userDao.delete(user, pas);
+		}
+		if("success".equals(result)) {
+			response.setCode("OK000");
+			response.setStatus(result);
+		} else {
+			response.setCode("ER001");
+			response.setErrors(new ErrorDTO("ER001",result));
+			response.setStatus("fail");
+		}
+		return response;
+	}
+
+	@Override
+	public ResponseDTO update(List<UserDTO> listaUsuario) {
+		ResponseDTO response = new ResponseDTO();
+		String result = "";
+		if (Utils.validateNullValue(listaUsuario.get(0).getUser()) && Utils.validateNullValue(listaUsuario.get(0).getPassword()) && Utils.validateNullValue(listaUsuario.get(1).getUser()) && Utils.validateNullValue(listaUsuario.get(1).getPassword())) {
+			UserRepositoryImpl userDao = new UserRepositoryImpl();
+			result = userDao.actualizar(listaUsuario.get(0).getUser(), listaUsuario.get(0).getPassword(), listaUsuario.get(1).getUser(), listaUsuario.get(1).getPassword());
 		}
 		if("success".equals(result)) {
 			response.setCode("OK000");

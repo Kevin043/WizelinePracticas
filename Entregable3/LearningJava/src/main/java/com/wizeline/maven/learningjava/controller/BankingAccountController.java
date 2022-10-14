@@ -159,7 +159,7 @@ public class BankingAccountController {
         bankAccountService.deleteAccounts();
         return new ResponseEntity<>("All accounts deleted", HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/deleteCollection")
     public ResponseEntity<String> eliminaCollections() {
         bankAccountService.deleteCollections();
@@ -184,7 +184,7 @@ public class BankingAccountController {
         return new ResponseEntity<>(postTest, responseHeaders, HttpStatus.OK);
     }
 
-    @Update("/actualizaCuentas/{banco}")
+    @PutMapping("/actualizaCuentas/{banco}")
     public  ResponseEntity<ResponseDTO> actualizaCuentas(@PathVariable String banco){
         return bankAccountService.actualizaCuenta(banco);
     }

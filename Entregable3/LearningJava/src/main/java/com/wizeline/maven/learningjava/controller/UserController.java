@@ -14,12 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wizeline.maven.learningjava.LearningJavaApplication;
 import com.wizeline.maven.learningjava.model.ResponseDTO;
@@ -61,26 +56,26 @@ public class UserController {
     @PostMapping("/createUser")
     public  ResponseEntity<ResponseDTO> createUserAccount(@RequestBody UserDTO userDTO) {
         LOGGER.info(msgProcPeticion);
-        ResponseDTO response = new ResponseDTO();
+        ResponseDTO respDto = new ResponseDTO();
 
-        response = createUser(userDTO.getUser(), userDTO.getPassword());
+        respDto = createUser(userDTO.getUser(), userDTO.getPassword());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
-        return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(respDto, responseHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/createUsers")
     public  ResponseEntity<List<ResponseDTO>> createUsersAccount(@RequestBody List<UserDTO> userDTOList) {
         LOGGER.info(msgProcPeticion);
-        AtomicReference<ResponseDTO> response = new AtomicReference<>(new ResponseDTO());
+        AtomicReference<ResponseDTO> respDto = new AtomicReference<>(new ResponseDTO());
         List<ResponseDTO> responseList = new ArrayList<>();
 
         userDTOList.stream().forEach( userDTO -> {
                     String user = userDTO.getUser();
                     String password = userDTO.getPassword();
-                    response.set(createUser(user, password));
-                    responseList.add(response.get());
+                    respDto.set(createUser(user, password));
+                    responseList.add(respDto.get());
                 }
         );
 
@@ -88,6 +83,26 @@ public class UserController {
         responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
 
         return new ResponseEntity<List<ResponseDTO>>(responseList, responseHeaders, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/usuario")
+    public ResponseEntity<ResponseDTO> deleteUser(@RequestBody UserDTO userDTO){
+        LOGGER.info(msgProcPeticion);
+        ResponseDTO respDto = new ResponseDTO();
+        respDto = userService.delete(userDTO.getUser(), userDTO.getPassword());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
+        return new ResponseEntity<>(respDto, responseHeaders, HttpStatus.OK);
+    }
+
+    @PutMapping("/usuario")
+    public ResponseEntity<ResponseDTO> updateUser(@RequestBody List<UserDTO> userDTOList){
+        LOGGER.info(msgProcPeticion);
+        ResponseDTO respDto = new ResponseDTO();
+        respDto = userService.update(userDTOList);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json; charset=UTF-8");
+        return new ResponseEntity<>(respDto, responseHeaders, HttpStatus.OK);
     }
 
 

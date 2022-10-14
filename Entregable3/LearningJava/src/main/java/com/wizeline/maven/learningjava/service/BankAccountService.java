@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2022 Nextiva, Inc. to Present.
- * All rights reserved.
- */
-
 package com.wizeline.maven.learningjava.service;
 
 import com.wizeline.maven.learningjava.model.BankAccountDTO;
@@ -18,7 +13,7 @@ public interface BankAccountService {
     BankAccountDTO getAccountDetails(String user, String lastUsage);
 
     void deleteAccounts();
-    
+
     void deleteCollections();
 
     List<BankAccountDTO> getAccountByUser(String user);

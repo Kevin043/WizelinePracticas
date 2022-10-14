@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2022 Nextiva, Inc. to Present.
- * All rights reserved.
- */
-
 package com.wizeline.maven.learningjava.service;
 
 import static com.wizeline.maven.learningjava.utils.Utils.*;
@@ -81,10 +76,11 @@ public class BankAccountServiceImpl implements BankAccountService {
         //Borrar todos los records que esten dentro de la coleccion bankAccountCollection en mongo db.
         bankAccountRepository.deleteAll();
     }
-    
+
+    // @Override
     public void deleteCollections() {
         mongoTemplate.dropCollection("bankAccountCollection");
-    } 
+    }
 
     @Override
     public List<BankAccountDTO> getAccountByUser(String user) {
